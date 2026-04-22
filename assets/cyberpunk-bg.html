@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyberpunk Grid Background</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red: #ff1a3c;
+    --pink: #ff2d6f;
+    --purple: #7b2fff;
+    --dark: #080008;
+    --glow-red: 0 0 8px #ff1a3c, 0 0 20px #ff1a3c55;
+    --glow-pink: 0 0 8px #ff2d6f, 0 0 30px #ff2d6f44;
+  }
+
+  body {
+    background: var(--dark);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: monospace;
+  }
+
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+
+  /* Scanline overlay */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.18) 2px,
+      rgba(0,0,0,0.18) 4px
+    );
+    pointer-events: none;
+    z-index: 10;
+    animation: scanRoll 12s linear infinite;
+  }
+
+  @keyframes scanRoll {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100vh; }
+  }
+
+  /* Vignette */
+  .vignette {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center,
+      transparent 40%,
+      rgba(5,0,10,0.7) 100%
+    );
+    pointer-events: none;
+    z-index: 11;
+  }
+
+  /* ── Name Banner ── */
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap');
+
+  .banner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    text-align: center;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .name {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: clamp(2.8rem, 8vw, 7rem);
+    letter-spacing: 0.12em;
+    color: #fff;
+    text-shadow:
+      0 0 10px #ff1a3c,
+      0 0 30px #ff1a3caa,
+      0 0 70px #ff1a3c55,
+      0 0 4px #fff;
+    animation: nameGlow 3s ease-in-out infinite alternate, nameIn 1.2s cubic-bezier(.16,1,.3,1) both;
+    position: relative;
+  }
+
+  /* Glitch layers */
+  .name::before,
+  .name::after {
+    content: 'ROHITH KUMAR';
+    position: absolute;
+    inset: 0;
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+  }
+  .name::before {
+    color: #ff2d6f;
+    clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+    animation: glitchA 5s infinite;
+    left: 3px;
+    opacity: 0.7;
+  }
+  .name::after {
+    color: #7b2fff;
+    clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+    animation: glitchB 5s infinite;
+    left: -3px;
+    opacity: 0.6;
+  }
+
+  .tagline {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.65rem, 1.5vw, 0.95rem);
+    letter-spacing: 0.35em;
+    color: #ff1a3c;
+    opacity: 0.75;
+    margin-top: 12px;
+    text-transform: uppercase;
+    animation: flicker 6s infinite, nameIn 1.8s 0.3s cubic-bezier(.16,1,.3,1) both;
+  }
+
+  /* Horizontal rule lines flanking name */
+  .rule {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 18px;
+    justify-content: center;
+  }
+  .rule-line {
+    height: 1px;
+    width: clamp(60px, 12vw, 140px);
+    background: linear-gradient(90deg, transparent, #ff1a3c, transparent);
+    animation: pulseRule 2.5s ease-in-out infinite alternate;
+  }
+  .rule-dot {
+    width: 5px; height: 5px;
+    background: #ff1a3c;
+    box-shadow: 0 0 8px #ff1a3c;
+    animation: pulseRule 2.5s ease-in-out infinite alternate;
+  }
+  .rule-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: #ff1a3c88;
+    animation: flicker 8s infinite;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 32px;
+    background: linear-gradient(to top, rgba(8,0,8,0.9) 0%, rgba(8,0,8,0.5) 70%, transparent 100%);
+    border-top: 1px solid rgba(255,26,60,0.2);
+    pointer-events: none;
+  }
+
+  .footer-left {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: #ff1a3c88;
+    animation: flicker 7s infinite;
+  }
+
+  .footer-center {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .footer-link {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s, text-shadow 0.3s;
+    pointer-events: all;
+    cursor: pointer;
+    animation: flicker 9s infinite;
+  }
+  .footer-link:hover {
+    color: #ff1a3c;
+    text-shadow: 0 0 10px #ff1a3c;
+  }
+  .footer-link .icon {
+    display: inline-block;
+    margin-right: 5px;
+    font-style: normal;
+  }
+
+  .footer-right {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: rgba(255,26,60,0.35);
+    animation: flicker 5s infinite;
+  }
+
+  /* Keyframes */
+  @keyframes nameGlow {
+    0%   { text-shadow: 0 0 10px #ff1a3c, 0 0 30px #ff1a3caa, 0 0 70px #ff1a3c55, 0 0 4px #fff; }
+    100% { text-shadow: 0 0 20px #ff2d6f, 0 0 55px #ff2d6fcc, 0 0 100px #ff2d6f66, 0 0 6px #fff; }
+  }
+  @keyframes nameIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes glitchA {
+    0%,92%,100% { transform: translateX(0); opacity: 0; }
+    93%          { transform: translateX(-4px); opacity: 0.7; }
+    95%          { transform: translateX(4px); opacity: 0.5; }
+    97%          { transform: translateX(-2px); opacity: 0.6; }
+  }
+  @keyframes glitchB {
+    0%,94%,100% { transform: translateX(0); opacity: 0; }
+    95%          { transform: translateX(5px); opacity: 0.6; }
+    97%          { transform: translateX(-5px); opacity: 0.4; }
+    99%          { transform: translateX(2px); opacity: 0.5; }
+  }
+  @keyframes flicker {
+    0%,90%,100% { opacity: 1; }
+    91%          { opacity: 0.1; }
+    93%          { opacity: 0.8; }
+    95%          { opacity: 0.05; }
+    97%          { opacity: 0.9; }
+  }
+  @keyframes pulseRule {
+    0%   { opacity: 0.4; }
+    100% { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<div class="scanlines"></div>
+<div class="vignette"></div>
+<!-- Name Banner -->
+<div class="banner">
+  <div class="tagline">// Full-Stack Developer &amp; AIML Enthusiast</div>
+  <div class="name">ROHITH KUMAR</div>
+  <div class="rule">
+    <div class="rule-line"></div>
+    <div class="rule-dot"></div>
+    <div class="rule-text">github.com/rohithkumar086</div>
+    <div class="rule-dot"></div>
+    <div class="rule-line"></div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-left">SYS://GRID.ACTIVE &nbsp;|&nbsp; v2.0.26</div>
+  <div class="footer-center">
+    <a class="footer-link" href="https://github.com/rohithkumar086" target="_blank">
+      <span class="icon">⌥</span>GitHub
+    </a>
+  </div>
+  <div class="footer-right">© 2026 ROHITH KUMAR</div>
+</footer>
+
+<script>
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+
+let W, H;
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ---- Dot matrix fields ----
+class DotField {
+  constructor(x, y, w, h, color, density, speed) {
+    this.x = x; this.y = y;
+    this.w = w; this.h = h;
+    this.color = color;
+    this.density = density; // spacing between dots
+    this.speed = speed;
+    this.offset = Math.random() * 1000;
+    this.alpha = 0.3 + Math.random() * 0.4;
+    this.glitchTimer = 0;
+    this.glitching = false;
+  }
+
+  draw(t) {
+    // Glitch trigger
+    if (!this.glitching && Math.random() < 0.002) {
+      this.glitching = true;
+      this.glitchTimer = 20 + Math.random() * 40;
+    }
+    if (this.glitching) {
+      this.glitchTimer--;
+      if (this.glitchTimer <= 0) this.glitching = false;
+    }
+
+    const alpha = this.glitching
+      ? this.alpha * (0.3 + 0.7 * Math.abs(Math.sin(t * 0.3)))
+      : this.alpha * (0.6 + 0.4 * Math.sin(t * 0.0005 + this.offset));
+
+    ctx.save();
+    ctx.globalAlpha = alpha;
+
+    const cols = Math.floor(this.w / this.density);
+    const rows = Math.floor(this.h / this.density);
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const px = this.x + c * this.density;
+        const py = this.y + r * this.density;
+
+        // Wave pulse
+        const wave = Math.sin((c + r) * 0.4 + t * 0.002 * this.speed + this.offset);
+        const bright = (wave + 1) / 2;
+
+        if (bright > 0.3) {
+          const size = this.glitching
+            ? (1 + Math.random() * 2)
+            : (1 + bright * 1.5);
+          ctx.fillStyle = this.color;
+          ctx.globalAlpha = alpha * bright;
+          ctx.fillRect(px, py, size, size);
+        }
+      }
+    }
+    ctx.restore();
+  }
+}
+
+// ---- Grid panels ----
+class GridPanel {
+  constructor(x, y, w, h, color, lineAlpha) {
+    this.x = x; this.y = y;
+    this.w = w; this.h = h;
+    this.color = color;
+    this.lineAlpha = lineAlpha;
+    this.cellSize = 28 + Math.floor(Math.random() * 30);
+    this.glitchTimer = 0;
+    this.glitching = false;
+    this.offsetX = 0;
+    this.pulse = Math.random() * Math.PI * 2;
+  }
+
+  draw(t) {
+    if (!this.glitching && Math.random() < 0.003) {
+      this.glitching = true;
+      this.glitchTimer = 10 + Math.random() * 30;
+    }
+    if (this.glitching) {
+      this.glitchTimer--;
+      this.offsetX = (Math.random() - 0.5) * 8;
+      if (this.glitchTimer <= 0) { this.glitching = false; this.offsetX = 0; }
+    }
+
+    const pAlpha = this.lineAlpha * (0.5 + 0.5 * Math.sin(t * 0.001 + this.pulse));
+
+    ctx.save();
+    ctx.translate(this.offsetX, 0);
+    ctx.globalAlpha = pAlpha;
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = 0.8;
+
+    // Vertical lines
+    for (let x = this.x; x <= this.x + this.w; x += this.cellSize) {
+      ctx.beginPath();
+      ctx.moveTo(x, this.y);
+      ctx.lineTo(x, this.y + this.h);
+      ctx.stroke();
+    }
+    // Horizontal lines
+    for (let y = this.y; y <= this.y + this.h; y += this.cellSize) {
+      ctx.beginPath();
+      ctx.moveTo(this.x, y);
+      ctx.lineTo(this.x + this.w, y);
+      ctx.stroke();
+    }
+
+    // Glow border
+    ctx.globalAlpha = pAlpha * 0.8;
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(this.x, this.y, this.w, this.h);
+
+    ctx.restore();
+  }
+}
+
+// ---- Flare burst ----
+class Flare {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.maxR = 60 + Math.random() * 120;
+    this.r = 0;
+    this.life = 1;
+    this.speed = 0.6 + Math.random() * 1.2;
+    this.color = Math.random() < 0.6 ? '#ff1a3c' : '#ff2d6f';
+    this.dead = false;
+  }
+
+  update() {
+    this.r += this.speed;
+    this.life = 1 - this.r / this.maxR;
+    if (this.r >= this.maxR) this.dead = true;
+  }
+
+  draw() {
+    if (this.dead) return;
+    ctx.save();
+    const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
+    grad.addColorStop(0, this.color + 'cc');
+    grad.addColorStop(0.4, this.color + '44');
+    grad.addColorStop(1, 'transparent');
+    ctx.globalAlpha = this.life * 0.6;
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+// ---- Setup scene ----
+let panels = [];
+let dotFields = [];
+let flares = [];
+
+function buildScene() {
+  panels = [];
+  dotFields = [];
+
+  const colors = ['#ff1a3c', '#ff2d6f', '#c41a6e', '#ff0055'];
+  const dotColors = ['#ff1a3c', '#ff2d6f', '#9b2eff', '#ff3366'];
+
+  // Create overlapping panels covering different regions
+  const panelDefs = [
+    { x: 0.02, y: 0.05, w: 0.3, h: 0.5 },
+    { x: 0.25, y: 0.0,  w: 0.4, h: 0.4 },
+    { x: 0.55, y: 0.1,  w: 0.42, h: 0.55 },
+    { x: 0.1,  y: 0.45, w: 0.35, h: 0.5 },
+    { x: 0.4,  y: 0.35, w: 0.3, h: 0.6 },
+    { x: 0.68, y: 0.55, w: 0.3, h: 0.42 },
+    { x: 0.0,  y: 0.7,  w: 0.25, h: 0.28 },
+  ];
+
+  panelDefs.forEach((p, i) => {
+    panels.push(new GridPanel(
+      p.x * W, p.y * H,
+      p.w * W, p.h * H,
+      colors[i % colors.length],
+      0.5 + Math.random() * 0.5
+    ));
+  });
+
+  // Dot matrix fields layered over some panels
+  const dotDefs = [
+    { x: 0.03, y: 0.08, w: 0.25, h: 0.4 },
+    { x: 0.58, y: 0.12, w: 0.35, h: 0.45 },
+    { x: 0.15, y: 0.5,  w: 0.3, h: 0.42 },
+    { x: 0.42, y: 0.38, w: 0.25, h: 0.55 },
+  ];
+
+  dotDefs.forEach((d, i) => {
+    dotFields.push(new DotField(
+      d.x * W, d.y * H,
+      d.w * W, d.h * H,
+      dotColors[i % dotColors.length],
+      6, 0.8 + Math.random() * 0.6
+    ));
+  });
+
+  // Spawn some flares
+  flares = Array.from({ length: 4 }, () => {
+    const f = new Flare();
+    f.r = Math.random() * f.maxR; // stagger them
+    return f;
+  });
+}
+
+buildScene();
+window.addEventListener('resize', buildScene);
+
+// ---- Render loop ----
+let lastFlare = 0;
+
+function render(t) {
+  requestAnimationFrame(render);
+
+  // Dark background with slight trail
+  ctx.fillStyle = 'rgba(8,0,8,0.55)';
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw panels
+  panels.forEach(p => p.draw(t));
+
+  // Draw dot fields on top
+  dotFields.forEach(d => d.draw(t));
+
+  // Draw & manage flares
+  flares.forEach(f => {
+    f.update();
+    f.draw();
+    if (f.dead && Math.random() < 0.3) f.reset();
+  });
+
+  // Occasionally spawn new flare
+  if (t - lastFlare > 2000 + Math.random() * 3000) {
+    flares.push(new Flare());
+    if (flares.length > 8) flares.shift();
+    lastFlare = t;
+  }
+
+  // Screen-wide glitch line
+  if (Math.random() < 0.01) {
+    const gy = Math.random() * H;
+    ctx.save();
+    ctx.globalAlpha = 0.15 + Math.random() * 0.25;
+    ctx.fillStyle = Math.random() < 0.5 ? '#ff1a3c' : '#ff2d6f';
+    ctx.fillRect(0, gy, W, 1 + Math.random() * 3);
+    ctx.restore();
+  }
+}
+
+requestAnimationFrame(render);
+</script>
+</body>
+</html>
