@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/RohithKumar086/RohithKumar086/blob/main/assets/banner12.svg?short_path=bc22c2d" width="900"/>
+  <img src="https://github.com/RohithKumar086/RohithKumar086/blob/main/assets/banner12.svg?short_path=bc22c2d" width="1000" height="400"/>
 </p>
 
   <b>2nd year AIML student at BMSCE 🎓 | Obsessed with AI, Machine Learning and everything in between. I love turning data into insights and ideas into projects. Still figuring things out, but enjoying every step of the journey! </b>
@@ -32,4 +32,6 @@
   <img src="https://skillicons.dev/icons?i=vscode,python,nextjs,express,react,js,cpp,c,mysql,mongodb,figma,numpy,matplotlib,pandas,sklearn" />
 </p>
 
-![footer](https://camo.githubusercontent.com/e77bffdc620695ca6432e2b6d4369a686ff2d1c2b7bed63e1aa8283f5cc4a024/68747470733a2f2f63617073756c652d72656e6465722e76657263656c2e6170702f6170693f747970653d776176696e6726636f6c6f723d6772616469656e74266865696768743d3130302673656374696f6e3d666f6f746572)
+<p align="center">
+  <img src="https://github.com/RohithKumar086/RohithKumar086/blob/main/assets/banner21.svg" width="1000" height="400"/>
+</p>
