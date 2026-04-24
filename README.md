@@ -1,6 +1,7 @@
+<p align="center">
+  <img src="https://github.com/RohithKumar086/RohithKumar086/blob/main/assets/banner12.svg?short_path=bc22c2d" width="900"/>
+</p>
 
-![header](https://capsule-render.vercel.app/api?type=waving&height=200&text=Hello!%20I'm%20Rohith&fontAlign=25&fontAlignY=40&fontSize=40&fontColor=ffffff&color=gradient)
-<h3 align="center">
   <b>2nd year AIML student at BMSCE 🎓 | Obsessed with AI, Machine Learning and everything in between. I love turning data into insights and ideas into projects. Still figuring things out, but enjoying every step of the journey! </b>
 </h3>
 <h2>🤝 &nbsp;Let's Connect!</h2>
