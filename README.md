@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/RohithKumar086/RohithKumar086/blob/main/assets/banner12.svg?short_path=bc22c2d" width="1000" height="400"/>
+  <img src="https://github.com/RohithKumar086/RohithKumar086/blob/main/assets/RohithKumar%20(1).png" width="1000" height="400"/>
 </p>
 
   <b>2nd year AIML student at BMSCE 🎓 | Obsessed with AI, Machine Learning and everything in between. I love turning data into insights and ideas into projects. Still figuring things out, but enjoying every step of the journey! </b>
